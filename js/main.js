@@ -1,6 +1,37 @@
 /* =========================================================
-   MAISON CROIX — storefront interactions
+   RIZEN · storefront interactions
    ========================================================= */
+
+/* ---------- Brand crest (cross over crown, fine gold line art) ---------- */
+const CREST = `
+<svg viewBox="0 0 160 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RIZEN crest"
+     fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- pearl finial atop the cross -->
+  <circle cx="80" cy="18" r="3" fill="currentColor" stroke="none"/>
+  <!-- cross: vertical spine down into the crown's centre point -->
+  <path d="M80 26 V 80"/>
+  <!-- cross arm -->
+  <path d="M50 58 H110"/>
+  <!-- star tips on the three cross ends -->
+  <path d="M80 22 L86 30 L80 38 L74 30 Z"/>
+  <path d="M42 58 L50 50 L58 58 L50 66 Z"/>
+  <path d="M118 58 L110 50 L102 58 L110 66 Z"/>
+  <!-- crown: three points on a banded base -->
+  <path d="M52 110 L62 86 L74 110"/>
+  <path d="M70 110 L80 80 L90 110"/>
+  <path d="M86 110 L98 86 L108 110"/>
+  <!-- crown base band -->
+  <path d="M50 110 H110 M50 116 H110 M50 110 V116 M110 110 V116"/>
+  <!-- pearls on the crown points -->
+  <circle cx="62" cy="84" r="3" fill="currentColor" stroke="none"/>
+  <circle cx="80" cy="78" r="3.4" fill="currentColor" stroke="none"/>
+  <circle cx="98" cy="84" r="3" fill="currentColor" stroke="none"/>
+  <!-- base finial with little scrolls -->
+  <path d="M80 116 V 134"/>
+  <path d="M80 134 L85 140 L80 146 L75 140 Z"/>
+  <path d="M80 123 C 70 127, 68 135, 75 138"/>
+  <path d="M80 123 C 90 127, 92 135, 85 138"/>
+</svg>`;
 
 /* ---------- Hand-chain SVG art ----------
    A stylised "hand chain": a ring (top) linked by draped chains
@@ -69,28 +100,97 @@ function handChainSVG(variant, id) {
   </svg>`;
 }
 
+/* ---------- Cross charm SVG ----------
+   A small jewellery cross overlaid onto each product photo. */
+function crossCharm(variant, id) {
+  const gold   = { a: "#FBEFC2", b: "#E2C25E", c: "#A9812F", edge: "#7E5E1F" };
+  const silver = { a: "#FFFFFF", b: "#D2D6DB", c: "#9097A0", edge: "#6E747C" };
+  const m = variant === "silver" ? silver : gold;
+  const g = `cx-${variant}-${id}`;
+  return `
+  <svg viewBox="0 0 120 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${variant} cross charm">
+    <defs>
+      <linearGradient id="${g}-m" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="${m.a}"/>
+        <stop offset="0.5" stop-color="${m.b}"/>
+        <stop offset="1" stop-color="${m.c}"/>
+      </linearGradient>
+    </defs>
+    <!-- bail -->
+    <circle cx="60" cy="20" r="9" fill="none" stroke="url(#${g}-m)" stroke-width="5"/>
+    <!-- cross body -->
+    <g stroke="${m.edge}" stroke-width="0.6">
+      <rect x="49" y="32" width="22" height="118" rx="8" fill="url(#${g}-m)"/>
+      <rect x="18" y="62" width="84" height="22" rx="8" fill="url(#${g}-m)"/>
+    </g>
+    <!-- highlight -->
+    <rect x="53" y="34" width="6" height="112" rx="3" fill="${m.a}" opacity="0.65"/>
+    <rect x="20" y="64" width="78" height="6" rx="3" fill="${m.a}" opacity="0.55"/>
+    <!-- sparkle -->
+    <path d="M86 50 l2.4 5.5 5.5 2.4 -5.5 2.4 -2.4 5.5 -2.4 -5.5 -5.5 -2.4 5.5 -2.4 z" fill="#fff" opacity="0.95"/>
+  </svg>`;
+}
+
+/* ---------- Product media (real photo + cross overlay, or drawn fallback) ----------
+   If `p.img` is set and loads, show the photo with a gold cross laid on top.
+   If the file is missing, fall back to the drawn hand-chain illustration. */
+function productMedia(p, scope) {
+  const cx = p.cross || {};
+  const pos = `left:${cx.x ?? 50}%; top:${cx.y ?? 58}%; width:${cx.size ?? 24}%;`;
+  if (p.img) {
+    return `
+      <img class="card__photo" src="${p.img}" alt="${p.name} cross hand chain"
+           loading="lazy" data-id="${p.id}" data-metal="${p.metal}" data-scope="${scope}"
+           onerror="photoFallback(this)" />
+      <div class="card__cross" style="${pos}">${crossCharm(p.metal, scope + "-" + p.id)}</div>`;
+  }
+  return `<div class="card__svg">${handChainSVG(p.metal, scope + "-" + p.id)}</div>`;
+}
+
+/* Swap a missing photo for the drawn illustration (removes its cross overlay). */
+function photoFallback(img) {
+  const media = img.parentElement;
+  const cross = media.querySelector(".card__cross");
+  if (cross) cross.remove();
+  const div = document.createElement("div");
+  div.className = "card__svg";
+  div.innerHTML = handChainSVG(img.dataset.metal, "fb-" + img.dataset.scope + "-" + img.dataset.id);
+  media.appendChild(div);
+  img.remove();
+}
+window.photoFallback = photoFallback;
+
 /* ---------- Product catalogue ----------
-   `newest: true` is showcased in the featured slot at the top. */
+   `newest: true` is showcased in the featured slot at the top.
+   `img` = real product photo (drop files into assets/products/).
+   `cross` = { x, y, size } in % to position the gold cross over the chain. */
 const PRODUCTS = [
   { id: "nova",     name: "Nova",     metal: "gold",   price: 365, tag: "Newest", newest: true,
-    desc: "Our latest piece — a luminous 18k drape finished with a faceted cross that catches every light." },
+    img: "assets/products/nova.jpg",    cross: { x: 50, y: 60, size: 22 },
+    desc: "Our latest piece, a luminous 18k drape finished with a faceted cross that catches every light." },
   { id: "aurelia",  name: "Aurélia",  metal: "gold",   price: 285, tag: "Bestseller",
-    desc: "Featherweight 18k chains draped to a single hand-set cross." },
+    img: "assets/products/aurelia.jpg", cross: { x: 50, y: 58, size: 24 },
+    desc: "Featherweight 18k chains draped to a single hand set cross." },
   { id: "seraphine", name: "Séraphine", metal: "gold",  price: 340, tag: "New",
-    desc: "A double-strand drape for a richer fall of gold across the hand." },
+    img: "assets/products/seraphine.jpg", cross: { x: 50, y: 58, size: 24 },
+    desc: "A double strand drape for a richer fall of gold across the hand." },
   { id: "lumiere",  name: "Lumière",  metal: "gold",   price: 395, tag: "Atelier",
-    desc: "Our signature piece — heavier links, a bolder cross." },
+    img: "assets/products/lumiere.jpg", cross: { x: 50, y: 58, size: 26 },
+    desc: "Our signature piece, heavier links, a bolder cross." },
   { id: "celeste",  name: "Céleste",  metal: "silver", price: 245, tag: "Bestseller",
-    desc: "Cool sterling silver with a delicate fine-link drape." },
+    img: "assets/products/celeste.jpg", cross: { x: 50, y: 58, size: 24 },
+    desc: "Cool sterling silver with a delicate fine link drape." },
   { id: "lune",     name: "Lune",     metal: "silver", price: 290, tag: "New",
-    desc: "Moon-bright 925 silver, finished with a slim Latin cross." },
+    img: "assets/products/lune.jpg",    cross: { x: 50, y: 58, size: 24 },
+    desc: "Moon bright 925 silver, finished with a slim Latin cross." },
   { id: "ivoire",   name: "Ivoire",   metal: "silver", price: 320, tag: "Atelier",
-    desc: "Hand-polished sterling, the quietest piece in the house." },
+    img: "assets/products/ivoire.jpg",  cross: { x: 50, y: 58, size: 24 },
+    desc: "Hand polished sterling, the quietest piece in the house." },
 ];
 
 const money = (n) => "$" + n.toLocaleString("en-US");
 
-/* Roman numerals — used for every number on the site except prices. */
+/* Roman numerals, used for every number on the site except prices. */
 function toRoman(num) {
   const map = [[1000,"M"],[900,"CM"],[500,"D"],[400,"CD"],[100,"C"],[90,"XC"],
     [50,"L"],[40,"XL"],[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]];
@@ -107,9 +207,9 @@ const featuredEl = document.getElementById("featured");
 function renderFeatured() {
   const p = PRODUCTS.find((x) => x.newest) || PRODUCTS[0];
   featuredEl.innerHTML = `
-    <div class="featured__media">
+    <div class="featured__media card__media">
       <span class="card__metal metal-${p.metal}" title="${p.metal}"></span>
-      <div class="featured__svg">${handChainSVG(p.metal, "featured-" + p.id)}</div>
+      ${productMedia(p, "featured")}
     </div>
     <div class="featured__body">
       <p class="eyebrow">Newest Addition</p>
@@ -136,7 +236,7 @@ function renderProducts(filter = "all") {
         <div class="card__media">
           <span class="card__tag">${p.tag}</span>
           <span class="card__metal metal-${p.metal}" title="${p.metal}"></span>
-          <div class="card__svg">${handChainSVG(p.metal, p.id)}</div>
+          ${productMedia(p, "card")}
         </div>
         <div class="card__body">
           <h3 class="card__name">${p.name}</h3>
@@ -244,7 +344,7 @@ document.getElementById("cartClose").addEventListener("click", closeCart);
 overlay.addEventListener("click", closeCart);
 document.getElementById("checkoutBtn").addEventListener("click", () => {
   if (!cart.length) { showToast("Your bag is empty"); return; }
-  showToast("Checkout is a demo — connect your payment provider to go live.");
+  showToast("Checkout is a demo. Connect your payment provider to go live.");
 });
 
 /* ---------- Toast ---------- */
@@ -298,6 +398,7 @@ function observeReveals() {
 /* ---------- Init ---------- */
 document.getElementById("heroPiece").innerHTML = handChainSVG("gold", "hero");
 document.getElementById("craftPiece").innerHTML = handChainSVG("silver", "craft");
+document.querySelectorAll("[data-crest]").forEach((el) => (el.innerHTML = CREST));
 document.getElementById("founded").textContent = toRoman(FOUNDED);
 renderFeatured();
 renderProducts();
