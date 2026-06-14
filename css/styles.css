@@ -40,7 +40,7 @@
   --shadow-lg: 0 50px 95px -28px rgba(0, 0, 0, 0.75);
   --glow-gold: 0 24px 60px -18px rgba(224, 137, 43, 0.45);
 
-  --serif: "Cormorant Garamond", Georgia, serif;
+  --serif: "Bodoni Moda", Georgia, serif;
   --sans:  "Jost", "Helvetica Neue", Arial, sans-serif;
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -223,7 +223,7 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
   gap: 3rem;
-  min-height: 80vh;
+  min-height: 72vh;
 }
 .hero__glow {
   position: absolute;
@@ -258,23 +258,23 @@ a { color: inherit; text-decoration: none; }
 /* ---------- 3D inverted display pyramid ---------- */
 .pyramid-scene {
   position: relative;
-  width: min(360px, 86%);
-  aspect-ratio: 3 / 4;
+  width: min(480px, 94%);
+  aspect-ratio: 4 / 5;
   display: grid;
   place-items: center;
-  perspective: 1100px;
+  perspective: 1300px;
 }
 .pyramid {
   position: relative;
-  width: 220px;
-  height: 220px;
+  width: 300px;
+  height: 300px;
   transform-style: preserve-3d;
-  --tilt: rotateX(-16deg);
+  --tilt: rotateX(-20deg);
   transform: var(--tilt) rotateY(0deg);
   /* fast spin on load, easing into an endless slow turn */
   animation:
     pyr-intro 5s cubic-bezier(0.16, 0.72, 0.18, 1) both,
-    pyr-spin 28s linear 5s infinite;
+    pyr-spin 30s linear 5s infinite;
 }
 @keyframes pyr-intro {
   from { transform: var(--tilt) rotateY(0deg); }
@@ -285,46 +285,42 @@ a { color: inherit; text-decoration: none; }
   to   { transform: var(--tilt) rotateY(360deg); }
 }
 
-/* four translucent amber-glass faces, apex pointing down */
+/* four glass faces, apex pointing down — crisp gold-edged panes drawn as SVG */
 .pyramid__face {
   position: absolute;
   top: 50%; left: 50%;
-  width: 220px; height: 156px;
-  margin-left: -110px;
+  width: 280px; height: 198px;
+  margin-left: -140px;
   transform-origin: 50% 0;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  background:
-    linear-gradient(180deg,
-      rgba(244, 216, 142, 0.30) 0%,
-      rgba(224, 137, 43, 0.16) 45%,
-      rgba(169, 119, 42, 0.06) 100%);
-  box-shadow: 0 0 24px rgba(224, 137, 43, 0.20);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 198' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23F6DC97' stop-opacity='0.5'/><stop offset='0.55' stop-color='%23E0892B' stop-opacity='0.2'/><stop offset='1' stop-color='%23A9772A' stop-opacity='0.05'/></linearGradient><linearGradient id='h' x1='0' y1='0' x2='0.7' y2='1'><stop offset='0' stop-color='%23FFFFFF' stop-opacity='0.55'/><stop offset='0.32' stop-color='%23FFFFFF' stop-opacity='0'/></linearGradient></defs><polygon points='3,3 277,3 140,195' fill='url(%23g)' stroke='%23FCE9B0' stroke-opacity='0.72' stroke-width='2.2' stroke-linejoin='round'/><polygon points='3,3 277,3 140,195' fill='url(%23h)'/></svg>");
   backface-visibility: visible;
 }
-.pyramid__face--1 { transform: rotateY(0deg)   translateZ(110px) rotateX(-45deg); opacity: 0.95; }
-.pyramid__face--2 { transform: rotateY(90deg)  translateZ(110px) rotateX(-45deg); opacity: 0.80; }
-.pyramid__face--3 { transform: rotateY(180deg) translateZ(110px) rotateX(-45deg); opacity: 0.70; }
-.pyramid__face--4 { transform: rotateY(270deg) translateZ(110px) rotateX(-45deg); opacity: 0.80; }
+.pyramid__face--1 { transform: rotateY(0deg)   translateZ(140px) rotateX(-45deg); opacity: 1;    }
+.pyramid__face--2 { transform: rotateY(90deg)  translateZ(140px) rotateX(-45deg); opacity: 0.88; }
+.pyramid__face--3 { transform: rotateY(180deg) translateZ(140px) rotateX(-45deg); opacity: 0.78; }
+.pyramid__face--4 { transform: rotateY(270deg) translateZ(140px) rotateX(-45deg); opacity: 0.88; }
 
 /* open top frame (the square mouth of the pyramid) */
 .pyramid__rim {
   position: absolute;
   top: 50%; left: 50%;
-  width: 220px; height: 220px;
-  margin: -110px 0 0 -110px;
+  width: 280px; height: 280px;
+  margin: -140px 0 0 -140px;
   transform: rotateX(90deg);
-  border: 1.5px solid rgba(244, 216, 142, 0.55);
-  box-shadow: 0 0 24px rgba(224, 137, 43, 0.25), inset 0 0 30px rgba(224,137,43,0.10);
+  border: 2px solid rgba(252, 233, 176, 0.6);
+  box-shadow: 0 0 30px rgba(224, 137, 43, 0.30), inset 0 0 40px rgba(224,137,43,0.12);
 }
 
 /* the jewel on display — stays facing the viewer while the glass spins */
 .pyramid__jewel {
   position: absolute;
-  top: 45%; left: 50%;
-  width: 132px;
+  top: 42%; left: 50%;
+  width: 158px;
   z-index: 5;
   transform: translate(-50%, -50%);
-  filter: drop-shadow(0 18px 26px rgba(0,0,0,0.6)) drop-shadow(0 0 18px rgba(244,216,142,0.45));
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.65)) drop-shadow(0 0 22px rgba(244,216,142,0.5));
   animation: jewel-float 7s var(--ease) infinite;
 }
 @keyframes jewel-float {
@@ -335,12 +331,12 @@ a { color: inherit; text-decoration: none; }
 /* amber pool of light under the apex */
 .pyramid__shadow {
   position: absolute;
-  bottom: 9%;
+  bottom: 7%;
   left: 50%;
-  width: 220px; height: 46px;
+  width: 300px; height: 60px;
   transform: translateX(-50%);
-  background: radial-gradient(closest-side, rgba(224,137,43,0.42), rgba(224,137,43,0.10) 60%, transparent 75%);
-  filter: blur(6px);
+  background: radial-gradient(closest-side, rgba(224,137,43,0.45), rgba(224,137,43,0.12) 58%, transparent 75%);
+  filter: blur(7px);
   border-radius: 50%;
   z-index: 0;
 }
@@ -351,12 +347,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- Section heads ---------- */
-.section-head { text-align: center; max-width: 40rem; margin: 0 auto clamp(2rem, 4vw, 3.4rem); }
+.section-head { text-align: center; max-width: 40rem; margin: 0 auto clamp(1.4rem, 3vw, 2.4rem); }
 .section-head h2 { font-size: clamp(2.2rem, 4.6vw, 3.4rem); margin: 0.8rem 0; }
 .section-head__sub { color: var(--text-soft); }
 
 /* ---------- Collection ---------- */
-.collection { max-width: var(--maxw); margin: 0 auto; padding: clamp(4rem, 8vw, 7rem) 2rem; }
+.collection { max-width: var(--maxw); margin: 0 auto; padding: clamp(2.5rem, 5vw, 4.5rem) 2rem; }
 
 .filters { display: flex; justify-content: center; gap: 0.6rem; margin-bottom: 3rem; }
 .filter {
@@ -384,17 +380,16 @@ a { color: inherit; text-decoration: none; }
   gap: 0;
   margin: clamp(2rem, 5vw, 4rem) 0 clamp(2.5rem, 5vw, 4rem);
   background: linear-gradient(180deg, var(--panel-2), var(--panel));
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  border: none;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), 0 0 56px -6px rgba(224, 137, 43, 0.38);
 }
 .featured__media {
   position: relative;
   min-height: 340px;
   display: grid; place-items: center;
   background: radial-gradient(70% 60% at 50% 40%, var(--lite-1), var(--lite-2) 55%, var(--lite-3) 100%);
-  border-right: 1px solid var(--line);
 }
 .featured__svg {
   width: 52%;
@@ -414,7 +409,7 @@ a { color: inherit; text-decoration: none; }
 .stack {
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: 2.8rem;
   max-width: 880px;
   margin: 0 auto;
 }
@@ -425,10 +420,11 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: 220px 1fr;
   align-items: stretch;
   background: linear-gradient(180deg, var(--panel-2) 0%, var(--panel) 100%);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: var(--shadow-md);
-  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease), border-color 0.5s var(--ease);
+  border: none;
+  border-radius: 10px;
+  /* no line — just a soft gold glow that suggests the edge, over a deep drop */
+  box-shadow: var(--shadow-md), 0 0 38px -6px rgba(224, 137, 43, 0.30);
+  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
   overflow: hidden;
 }
 .card::before {
@@ -438,13 +434,12 @@ a { color: inherit; text-decoration: none; }
   opacity: 0; transition: opacity 0.5s var(--ease);
   pointer-events: none;
 }
-.card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg), var(--glow-gold); border-color: var(--gold); }
+.card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg), 0 0 64px -4px rgba(224, 137, 43, 0.55); }
 .card:hover::before { opacity: 1; }
 
 .card__media {
   position: relative;
   min-height: 220px;
-  border-right: 1px solid var(--line);
   background: radial-gradient(60% 60% at 50% 40%, var(--lite-1), var(--lite-2) 60%, var(--lite-3) 100%);
   display: grid; place-items: center;
   overflow: hidden;
@@ -519,7 +514,7 @@ a { color: inherit; text-decoration: none; }
 .craft {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: clamp(3rem, 7vw, 6rem) 2rem;
+  padding: clamp(2rem, 4vw, 4rem) 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(2rem, 5vw, 5rem);
@@ -562,7 +557,7 @@ a { color: inherit; text-decoration: none; }
 .story__inner {
   max-width: 46rem;
   margin: 0 auto;
-  padding: clamp(4rem, 9vw, 7rem) 2rem;
+  padding: clamp(2.5rem, 5vw, 4.5rem) 2rem;
   text-align: center;
 }
 .story .eyebrow { color: var(--amber); }
@@ -572,7 +567,7 @@ a { color: inherit; text-decoration: none; }
 .story__sign { margin-top: 1.8rem; font-family: var(--serif); font-style: italic; font-size: 1.2rem; color: var(--gold-light); }
 
 /* ---------- Testimonials ---------- */
-.testimonials { max-width: var(--maxw); margin: 0 auto; padding: clamp(3rem, 7vw, 6rem) 2rem; }
+.testimonials { max-width: var(--maxw); margin: 0 auto; padding: clamp(2rem, 4vw, 4rem) 2rem; }
 .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.8rem; }
 .quote {
   background: linear-gradient(180deg, var(--panel-2), var(--panel));
@@ -588,7 +583,7 @@ a { color: inherit; text-decoration: none; }
 .quote figcaption { font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-soft); }
 
 /* ---------- Newsletter ---------- */
-.newsletter { max-width: var(--maxw); margin: 0 auto; padding: clamp(3rem, 7vw, 6rem) 2rem; }
+.newsletter { max-width: var(--maxw); margin: 0 auto; padding: clamp(2rem, 4vw, 4rem) 2rem; }
 .newsletter__inner {
   text-align: center;
   background:
@@ -721,10 +716,10 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 760px) {
   .featured { grid-template-columns: 1fr; }
-  .featured__media { border-right: none; border-bottom: 1px solid var(--line); min-height: 280px; }
+  .featured__media { min-height: 280px; }
   .featured__svg { width: 44%; }
   .card { grid-template-columns: 1fr; }
-  .card__media { border-right: none; border-bottom: 1px solid var(--line); min-height: 240px; }
+  .card__media { min-height: 240px; }
   .card__svg { width: 48%; }
   .card__body { text-align: center; }
   .card__row { justify-content: center; gap: 1.2rem; }
