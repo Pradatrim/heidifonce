@@ -69,8 +69,11 @@ function handChainSVG(variant, id) {
   </svg>`;
 }
 
-/* ---------- Product catalogue ---------- */
+/* ---------- Product catalogue ----------
+   `newest: true` is showcased in the featured slot at the top. */
 const PRODUCTS = [
+  { id: "nova",     name: "Nova",     metal: "gold",   price: 365, tag: "Newest", newest: true,
+    desc: "Our latest piece — a luminous 18k drape finished with a faceted cross that catches every light." },
   { id: "aurelia",  name: "Aurélia",  metal: "gold",   price: 285, tag: "Bestseller",
     desc: "Featherweight 18k chains draped to a single hand-set cross." },
   { id: "seraphine", name: "Séraphine", metal: "gold",  price: 340, tag: "New",
@@ -87,7 +90,39 @@ const PRODUCTS = [
 
 const money = (n) => "$" + n.toLocaleString("en-US");
 
-/* ---------- Render products ---------- */
+/* Roman numerals — used for every number on the site except prices. */
+function toRoman(num) {
+  const map = [[1000,"M"],[900,"CM"],[500,"D"],[400,"CD"],[100,"C"],[90,"XC"],
+    [50,"L"],[40,"XL"],[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]];
+  let out = "";
+  for (const [v, s] of map) { while (num >= v) { out += s; num -= v; } }
+  return out;
+}
+
+const FOUNDED = 2026; // MMXXVI
+
+/* ---------- Render featured (newest) showcase ---------- */
+const featuredEl = document.getElementById("featured");
+
+function renderFeatured() {
+  const p = PRODUCTS.find((x) => x.newest) || PRODUCTS[0];
+  featuredEl.innerHTML = `
+    <div class="featured__media">
+      <span class="card__metal metal-${p.metal}" title="${p.metal}"></span>
+      <div class="featured__svg">${handChainSVG(p.metal, "featured-" + p.id)}</div>
+    </div>
+    <div class="featured__body">
+      <p class="eyebrow">Newest Addition</p>
+      <h3 class="featured__name">${p.name}</h3>
+      <p class="featured__desc">${p.desc}</p>
+      <div class="featured__row">
+        <span class="featured__price">${money(p.price)}</span>
+        <button class="btn btn--gold card__add" data-id="${p.id}">Add to Bag</button>
+      </div>
+    </div>`;
+}
+
+/* ---------- Render products (stacked, one on top of the other) ---------- */
 const grid = document.getElementById("productGrid");
 
 function renderProducts(filter = "all") {
@@ -103,11 +138,13 @@ function renderProducts(filter = "all") {
           <span class="card__metal metal-${p.metal}" title="${p.metal}"></span>
           <div class="card__svg">${handChainSVG(p.metal, p.id)}</div>
         </div>
-        <h3 class="card__name">${p.name}</h3>
-        <p class="card__desc">${p.desc}</p>
-        <div class="card__row">
-          <span class="card__price">${money(p.price)}</span>
-          <button class="card__add" data-id="${p.id}">Add to Bag</button>
+        <div class="card__body">
+          <h3 class="card__name">${p.name}</h3>
+          <p class="card__desc">${p.desc}</p>
+          <div class="card__row">
+            <span class="card__price">${money(p.price)}</span>
+            <button class="card__add" data-id="${p.id}">Add to Bag</button>
+          </div>
         </div>`;
       grid.appendChild(card);
     });
@@ -186,10 +223,12 @@ function renderCart() {
     </div>`).join("");
 }
 
-grid.addEventListener("click", (e) => {
+function onAddClick(e) {
   const add = e.target.closest(".card__add");
   if (add) addToCart(add.dataset.id);
-});
+}
+grid.addEventListener("click", onAddClick);
+featuredEl.addEventListener("click", onAddClick);
 
 cartItemsEl.addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-act]");
@@ -259,7 +298,8 @@ function observeReveals() {
 /* ---------- Init ---------- */
 document.getElementById("heroPiece").innerHTML = handChainSVG("gold", "hero");
 document.getElementById("craftPiece").innerHTML = handChainSVG("silver", "craft");
-document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("founded").textContent = toRoman(FOUNDED);
+renderFeatured();
 renderProducts();
 renderCart();
 observeReveals();

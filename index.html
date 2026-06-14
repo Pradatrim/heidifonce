@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -101,13 +101,16 @@
         </p>
       </div>
 
+      <!-- Featured newest addition (injected by JS) -->
+      <div class="featured reveal" id="featured"></div>
+
       <div class="filters reveal" id="filters">
         <button class="filter is-active" data-filter="all">All</button>
         <button class="filter" data-filter="gold">Gold</button>
         <button class="filter" data-filter="silver">Silver</button>
       </div>
 
-      <div class="grid" id="productGrid"><!-- products injected by JS --></div>
+      <div class="stack" id="productGrid"><!-- products injected by JS --></div>
     </section>
 
     <!-- Craftsmanship -->
@@ -124,10 +127,10 @@
           should across the back of the wrist.
         </p>
         <ul class="craft__list">
-          <li><span>01</span> Solid 18k gold &amp; 925 sterling — never plated to fade.</li>
-          <li><span>02</span> The cross is hand-set, never glued.</li>
-          <li><span>03</span> Adjustable drape, fitted to your hand.</li>
-          <li><span>04</span> Presented in a signature cream keepsake box.</li>
+          <li><span>I</span> Solid 18k gold &amp; 925 sterling — never plated to fade.</li>
+          <li><span>II</span> The cross is hand-set, never glued.</li>
+          <li><span>III</span> Adjustable drape, fitted to your hand.</li>
+          <li><span>IV</span> Presented in a signature cream keepsake box.</li>
         </ul>
         <a href="#collection" class="btn btn--dark">Find your piece</a>
       </div>
@@ -216,7 +219,7 @@
       </div>
     </div>
     <div class="footer__bar">
-      <span>© <span id="year"></span> Maison Croix. All rights reserved.</span>
+      <span>Founded in <span id="founded"></span> · Maison Croix. All rights reserved.</span>
       <span>Crafted with devotion ✛</span>
     </div>
   </footer>
