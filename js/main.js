@@ -234,7 +234,6 @@ function renderProducts(filter = "all") {
       card.className = "card reveal";
       card.innerHTML = `
         <div class="card__media">
-          <span class="card__tag">${p.tag}</span>
           <span class="card__metal metal-${p.metal}" title="${p.metal}"></span>
           ${productMedia(p, "card")}
         </div>
