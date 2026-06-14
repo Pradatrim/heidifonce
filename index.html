@@ -18,15 +18,16 @@
   <!-- Navigation -->
   <header class="nav" id="nav">
     <div class="nav__inner">
-      <button class="nav__toggle" id="navToggle" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
-
-      <nav class="nav__links nav__links--left" id="navLinks">
-        <a href="#collection">Collection</a>
-        <a href="#craft">Craftsmanship</a>
-        <a href="#story">The House</a>
-      </nav>
+      <div class="nav__menu">
+        <button class="nav__dots" id="navDots" aria-label="Open menu" aria-expanded="false" aria-controls="navDropdown">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav__dropdown" id="navDropdown" role="menu">
+          <a href="#collection">Collection</a>
+          <a href="#craft">Craftsmanship</a>
+          <a href="#story">The House</a>
+        </div>
+      </div>
 
       <a href="#top" class="brand" aria-label="RIZEN home">
         <span class="brand__crest" data-crest></span>
@@ -70,11 +71,11 @@
             <span class="pyramid__face pyramid__face--2"></span>
             <span class="pyramid__face pyramid__face--3"></span>
             <span class="pyramid__face pyramid__face--4"></span>
-            <span class="pyramid__rim"></span>
+            <span class="pyramid__base"></span>
           </div>
-          <!-- the jewel on display, injected by JS -->
-          <div class="pyramid__jewel" id="heroPiece"></div>
           <div class="pyramid__shadow"></div>
+          <!-- the jewel on display, hovering above the flat base, injected by JS -->
+          <div class="pyramid__jewel" id="heroPiece"></div>
         </div>
       </div>
     </section>

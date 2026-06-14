@@ -370,12 +370,21 @@ window.addEventListener("scroll", () => {
   nav.classList.toggle("is-stuck", window.scrollY > 10);
 }, { passive: true });
 
-/* ---------- Mobile menu ---------- */
-const navToggle = document.getElementById("navToggle");
-const navLinks = document.getElementById("navLinks");
-navToggle.addEventListener("click", () => navLinks.classList.toggle("is-open"));
-navLinks.addEventListener("click", (e) => {
-  if (e.target.tagName === "A") navLinks.classList.remove("is-open");
+/* ---------- Three-dots menu ---------- */
+const navDots = document.getElementById("navDots");
+const navDropdown = document.getElementById("navDropdown");
+function closeMenu() {
+  navDropdown.classList.remove("is-open");
+  navDots.setAttribute("aria-expanded", "false");
+}
+navDots.addEventListener("click", (e) => {
+  e.stopPropagation();
+  const open = navDropdown.classList.toggle("is-open");
+  navDots.setAttribute("aria-expanded", open ? "true" : "false");
+});
+navDropdown.addEventListener("click", (e) => { if (e.target.tagName === "A") closeMenu(); });
+document.addEventListener("click", (e) => {
+  if (!navDropdown.contains(e.target) && !navDots.contains(e.target)) closeMenu();
 });
 
 /* ---------- Reveal on scroll ---------- */
