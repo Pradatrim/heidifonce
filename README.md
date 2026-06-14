@@ -1,9 +1,10 @@
 # RIZEN
 
 A luxury boutique storefront for **gold & silver cross hand chains**, built as a
-fast, self-contained dropshipping landing site. Cream-and-gold palette, elegant
-serif typography, deep black drop shadows, a custom gold crest logo, and a
-photo-plus-cross product system (with hand-drawn SVG fallbacks).
+fast, self-contained dropshipping landing site. Deep, rich, high-contrast palette
+(moonlit amber on near-black), a 3D inverted display pyramid that spins on load,
+elegant serif typography, a custom gold crest logo, and a photo-plus-cross
+product system (with hand-drawn SVG fallbacks).
 
 ## Run it
 

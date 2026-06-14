@@ -69,9 +69,19 @@
       </div>
 
       <div class="hero__piece reveal">
-        <div class="hero__pedestal"></div>
-        <!-- decorative hand chain illustration injected by JS -->
-        <div class="hero__svg" id="heroPiece"></div>
+        <div class="pyramid-scene">
+          <!-- inverted glass display pyramid (spins on load, then slow) -->
+          <div class="pyramid">
+            <span class="pyramid__face pyramid__face--1"></span>
+            <span class="pyramid__face pyramid__face--2"></span>
+            <span class="pyramid__face pyramid__face--3"></span>
+            <span class="pyramid__face pyramid__face--4"></span>
+            <span class="pyramid__rim"></span>
+          </div>
+          <!-- the jewel on display, injected by JS -->
+          <div class="pyramid__jewel" id="heroPiece"></div>
+          <div class="pyramid__shadow"></div>
+        </div>
       </div>
     </section>
 
