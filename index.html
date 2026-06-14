@@ -49,19 +49,6 @@
     <!-- Hero -->
     <section class="hero">
       <div class="hero__glow"></div>
-      <div class="hero__content">
-        <p class="eyebrow reveal">RIZEN · Est. MMXXVI</p>
-        <h1 class="hero__title reveal">
-          Sacred adornments,<br /><em>cast in light.</em>
-        </h1>
-        <p class="hero__sub reveal">
-          Gold &amp; silver hand chains, each crowned with a cross.
-        </p>
-        <div class="hero__actions reveal">
-          <a href="#collection" class="btn btn--gold">Explore the Collection</a>
-          <a href="#story" class="btn btn--ghost">Our Story</a>
-        </div>
-      </div>
 
       <div class="hero__piece reveal">
         <div class="pyramid-scene">
@@ -74,8 +61,21 @@
             <span class="pyramid__base"></span>
           </div>
           <div class="pyramid__shadow"></div>
-          <!-- the jewel on display, hovering above the flat base, injected by JS -->
+          <!-- the jewel on display, hovering inside the pyramid, injected by JS -->
           <div class="pyramid__jewel" id="heroPiece"></div>
+        </div>
+      </div>
+
+      <!-- price + add to bag for the displayed piece, below the pyramid -->
+      <div class="hero__content">
+        <p class="eyebrow reveal">RIZEN · Est. MMXXVI</p>
+        <h1 class="hero__title reveal">
+          Sacred adornments
+          <span class="hero__title-sub">cast in light.</span>
+        </h1>
+        <div class="hero__buy reveal">
+          <span class="hero__price" id="heroPrice"></span>
+          <button class="btn btn--gold" id="heroAdd">Add to Bag</button>
         </div>
       </div>
     </section>
@@ -83,13 +83,8 @@
     <!-- Collection -->
     <section class="collection" id="collection">
       <div class="section-head reveal">
-        <p class="eyebrow">The Collection</p>
-        <h2>Pieces of devotion</h2>
-        <p class="section-head__sub">Gold or silver. Each with a hand set cross.</p>
+        <h2>Collection</h2>
       </div>
-
-      <!-- Featured newest addition (injected by JS) -->
-      <div class="featured reveal" id="featured"></div>
 
       <div class="filters reveal" id="filters">
         <button class="filter is-active" data-filter="all">All</button>

@@ -201,25 +201,12 @@ function toRoman(num) {
 
 const FOUNDED = 2026; // MMXXVI
 
-/* ---------- Render featured (newest) showcase ---------- */
-const featuredEl = document.getElementById("featured");
-
-function renderFeatured() {
-  const p = PRODUCTS.find((x) => x.newest) || PRODUCTS[0];
-  featuredEl.innerHTML = `
-    <div class="featured__media card__media">
-      <span class="card__metal metal-${p.metal}" title="${p.metal}"></span>
-      ${productMedia(p, "featured")}
-    </div>
-    <div class="featured__body">
-      <p class="eyebrow">Newest Addition</p>
-      <h3 class="featured__name">${p.name}</h3>
-      <p class="featured__desc">${p.desc}</p>
-      <div class="featured__row">
-        <span class="featured__price">${money(p.price)}</span>
-        <button class="btn btn--gold card__add" data-id="${p.id}">Add to Bag</button>
-      </div>
-    </div>`;
+/* ---------- Hero showcase (the piece displayed in the pyramid) ---------- */
+const heroProduct = PRODUCTS.find((x) => x.newest) || PRODUCTS[0];
+function wireHero() {
+  document.getElementById("heroPiece").innerHTML = handChainSVG(heroProduct.metal, "hero");
+  document.getElementById("heroPrice").textContent = money(heroProduct.price);
+  document.getElementById("heroAdd").addEventListener("click", () => addToCart(heroProduct.id));
 }
 
 /* ---------- Render products (stacked, one on top of the other) ---------- */
@@ -327,7 +314,6 @@ function onAddClick(e) {
   if (add) addToCart(add.dataset.id);
 }
 grid.addEventListener("click", onAddClick);
-featuredEl.addEventListener("click", onAddClick);
 
 cartItemsEl.addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-act]");
@@ -404,11 +390,10 @@ function observeReveals() {
 }
 
 /* ---------- Init ---------- */
-document.getElementById("heroPiece").innerHTML = handChainSVG("gold", "hero");
+wireHero();
 document.getElementById("craftPiece").innerHTML = handChainSVG("silver", "craft");
 document.querySelectorAll("[data-crest]").forEach((el) => (el.innerHTML = CREST));
 document.getElementById("founded").textContent = toRoman(FOUNDED);
-renderFeatured();
 renderProducts();
 renderCart();
 observeReveals();

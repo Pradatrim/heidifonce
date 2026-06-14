@@ -304,6 +304,22 @@ a { color: inherit; text-decoration: none; }
   font-size: 1.06rem;
 }
 .hero__actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.hero__title-sub {
+  display: block;
+  font-size: 0.4em;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--gold-light);
+  margin-top: 0.55rem;
+}
+.hero__buy {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1.4rem; margin-top: 1.8rem; flex-wrap: wrap;
+}
+.hero__price {
+  font-family: var(--serif); font-weight: 700;
+  font-size: 2rem; color: var(--gold-light); letter-spacing: 0.04em;
+}
 
 /* ---------- 3D inverted display pyramid ---------- */
 .pyramid-scene {
